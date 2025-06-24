@@ -14,7 +14,6 @@ add_library(${PROJECT_NAME} STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/testcase.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/testresult.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrutinytest.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/testcase_handler.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

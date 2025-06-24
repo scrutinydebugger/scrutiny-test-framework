@@ -8,11 +8,16 @@ namespace scrutinytest
 {
     void set_ostream(std::ostream *ostream)
     {
-        TestCaseHandler::get_runner()->set_ostream(ostream);
+        MainRunner::get()->set_ostream(ostream);
+    }
+
+    void set_timestamp_func(timestamp_ms_func_t func)
+    {
+        MainRunner::get()->set_timestamp_func(func);
     }
 
     int main()
     {
-        return TestCaseHandler::get_runner()->run();
+        return MainRunner::get()->run();
     }
 } // namespace scrutinytest

@@ -10,12 +10,10 @@ namespace scrutinytest
     {
       public:
         TestResult(std::ostream &stream);
-        std::ostream &record_assertion(bool condition);
+        std::ostream &record_failure();
         inline unsigned int failure_count() const { return m_failure_count; }
-        void finalize();
 
       private:
-        void flush_failures();
         std::stringstream m_failure_log_stream;
         std::ostream &m_ostream;
         unsigned int m_failure_count;

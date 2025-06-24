@@ -8,14 +8,19 @@
 
 namespace scrutinytest
 {
-    class TestCaseHandler
+    template <typename CaseClass> class TestCaseHandler
     {
       public:
-        TestCaseHandler(std::string const &suitename, std::string const &casename, testbody_t body);
-        static TestRunner *get_runner();
+        TestCaseHandler(std::string const &suitename, std::string const &casename) :
+            m_testcase()
+        {
+            m_testcase._set_name(casename);
+
+            MainRunner::get()->register_test_case(suitename, &m_testcase);
+        }
 
       private:
-        TestCase m_testcase;
+        CaseClass m_testcase;
     };
 } // namespace scrutinytest
 
