@@ -42,7 +42,7 @@ namespace scrutinytest
         if (m_setup_error)
         {
             print_fatal(m_setup_error_str);
-            return -2;
+            return 2;
         }
 
         unsigned long int error_count = 0;
@@ -147,7 +147,7 @@ namespace scrutinytest
                 }
                 else if (!pass)
                 {
-                    pass_count++;
+                    fail_count++;
                     print_run_fail();
                 }
                 else
@@ -181,7 +181,7 @@ namespace scrutinytest
 
         if (error_count > 0 || fail_count > 0)
         {
-            return -1;
+            return 1;
         }
 
         m_success = true;
