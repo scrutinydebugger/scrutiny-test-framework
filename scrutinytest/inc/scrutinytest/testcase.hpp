@@ -50,8 +50,8 @@ namespace scrutinytest
         TestResult *SCRUTINYTEST_RESULT;
 
       private:
-        virtual void setUp();
-        virtual void tearDown();
+        virtual void SetUp();
+        virtual void TearDown();
         virtual void body() = 0;
         inline TestCase *_set_result(TestResult *const result)
         {

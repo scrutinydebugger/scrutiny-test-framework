@@ -10,7 +10,7 @@
     "exclude_patterns": [],
     "license": "MIT - See LICENSE file",
     "project": "Scrutiny Debugger",
-    "repo": "github.com/scrutinydebugger/scrutiny-embedded",
+    "repo": "github.com/scrutinydebugger/scrutiny-test-framework",
     "copyright_owner": "Scrutiny Debugger",
     "copyright_start_date": null,
     "copyright_end_date": null,

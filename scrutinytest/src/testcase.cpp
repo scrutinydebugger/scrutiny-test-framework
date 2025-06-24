@@ -13,8 +13,8 @@
 
 namespace scrutinytest
 {
-    void TestCase::setUp() {}
-    void TestCase::tearDown() {}
+    void TestCase::SetUp() {}
+    void TestCase::TearDown() {}
 
     bool TestCase::TEST_BUF_EQ(unsigned char const *candidate, unsigned char const *expected, size_t const size)
     {

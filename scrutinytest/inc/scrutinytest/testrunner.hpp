@@ -44,10 +44,10 @@ namespace scrutinytest
 
         std::ostream *m_ostream;
         test_case_map_t m_test_cases;
-        std::string m_setup_error_str;
+        std::string m_init_error_str;
         timestamp_ms_func_t m_timestamp_ms_func;
 
-        bool m_setup_error;
+        bool m_init_error;
         bool m_success;
     };
 

@@ -26,9 +26,9 @@ namespace scrutinytest
     TestRunner::TestRunner() :
         m_ostream(&std::cout),
         m_test_cases(),
-        m_setup_error_str(),
+        m_init_error_str(),
         m_timestamp_ms_func(default_timestamp_ms_func),
-        m_setup_error(false),
+        m_init_error(false),
         m_success(false)
     {
     }
@@ -39,9 +39,9 @@ namespace scrutinytest
     {
         m_success = false;
         uint32_t run_start_timestamp_ms = m_timestamp_ms_func();
-        if (m_setup_error)
+        if (m_init_error)
         {
-            print_fatal(m_setup_error_str);
+            print_fatal(m_init_error_str);
             return 2;
         }
 
@@ -71,7 +71,7 @@ namespace scrutinytest
                 {
 #endif
                     print_run_start(suitename, testcase->name()) << std::endl;
-                    testcase->setUp();
+                    testcase->SetUp();
 #if SCRUTINYTEST_HAVE_EXCEPTIONS
                     try
                     {
@@ -104,7 +104,7 @@ namespace scrutinytest
                         error_str = "unknown error";
                     }
 #endif
-                    testcase->tearDown();
+                    testcase->TearDown();
 #if SCRUTINYTEST_HAVE_EXCEPTIONS
                 }
                 catch (const std::exception &e)
@@ -161,7 +161,7 @@ namespace scrutinytest
             }
             uint32_t testsuite_time_ms = m_timestamp_ms_func() - testsuite_start_timestamp_ms;
 
-            print_separator() << testcases.size() << "tests from " << suitename << " (" << testsuite_time_ms << " ms)" << std::endl;
+            print_separator() << testcases.size() << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << std::endl;
         }
         unsigned long int total_test = error_count + fail_count + pass_count;
         *m_ostream << "\n" << total_test << " tests executed in ";

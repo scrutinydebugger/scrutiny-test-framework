@@ -17,8 +17,8 @@
 class MyTestCase : public scrutinytest::TestCase
 {
   public:
-    void setUp() { std::cout << "Custom setup : Success" << std::endl; }
-    void tearDown() { std::cout << "Custom tearDown : Success" << std::endl; }
+    void SetUp() { std::cout << "Custom setup : Success" << std::endl; }
+    void TearDown() { std::cout << "Custom tearDown : Success" << std::endl; }
 
     int internal_var1;
     int internal_var2;
