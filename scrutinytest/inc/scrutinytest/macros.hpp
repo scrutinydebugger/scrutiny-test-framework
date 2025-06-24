@@ -5,7 +5,7 @@
 #define SCRUTINYTEST_RESULT_ARG scrutinytest::TestResult *const SCRUTINYTEST_RESULT
 
 #define SCRUTINYTEST_PASS return true
-#define SCRUTINYTEST_FAIL return TestFailure() = SCRUTINYTEST_RESULT->msg_buffer() // This returns false always
+#define SCRUTINYTEST_FAIL return scrutinytest::TestFailure() = SCRUTINYTEST_RESULT->msg_buffer() // This returns false always
 
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
