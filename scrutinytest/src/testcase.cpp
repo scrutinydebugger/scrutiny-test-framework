@@ -43,4 +43,18 @@ namespace scrutinytest
         SCRUTINYTEST_PASS;
     }
 
+    bool TestCase::TEST_IS_NEAR(double const a, double const b, double const abs_error)
+    {
+        double diff = a - b;
+        if (diff < 0)
+        {
+            diff = -diff;
+        }
+        if (diff > abs_error)
+        {
+            SCRUTINYTEST_FAIL << "Absolute error between " << a << " and " << b << " is greater than abs_error\n";
+        }
+        SCRUTINYTEST_PASS;
+    }
+
 } // namespace scrutinytest

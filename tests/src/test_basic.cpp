@@ -38,6 +38,11 @@ TEST(Testsuite1, Case1)
 
     ASSERT_TRUE(my_var2 == my_var3);
     ASSERT_FALSE(my_var2 == my_var1);
+
+    float a = 1.233;
+    float b = 1.234;
+
+    EXPECT_NEAR(a, b, 0.1);
 }
 
 #if SCRUTINYTEST_HAVE_EXCEPTIONS
