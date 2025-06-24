@@ -1,3 +1,11 @@
+//    testrunner.hpp
+//        The class that will iterate all test suites and run the test cases
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #ifndef _SCRUTINY_TESTRUNNER_HPP_
 #define _SCRUTINY_TESTRUNNER_HPP_
 

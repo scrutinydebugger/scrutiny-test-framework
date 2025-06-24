@@ -1,3 +1,10 @@
+//    scrutinytest.hpp
+//        The main header to include for the scrutinytest framework
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
 
 #ifndef _SCRUTINYTEST_HPP_
 #define _SCRUTINYTEST_HPP_

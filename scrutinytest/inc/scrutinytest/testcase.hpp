@@ -1,3 +1,11 @@
+//    testcase.hpp
+//        A base class for every test case
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #ifndef _SCRUTINYTEST_TESTCASE_HPP_
 #define _SCRUTINYTEST_TESTCASE_HPP_
 

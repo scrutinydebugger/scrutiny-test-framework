@@ -1,0 +1,58 @@
+{
+    "folders": [
+        "scrutinytest",
+        "tests"
+    ],
+    "include_patterns": [
+        "*.cpp",
+        "*.hpp"
+    ],
+    "exclude_patterns": [],
+    "license": "MIT - See LICENSE file",
+    "project": "Scrutiny Debugger",
+    "repo": "github.com/scrutinydebugger/scrutiny-embedded",
+    "copyright_owner": "Scrutiny Debugger",
+    "copyright_start_date": null,
+    "copyright_end_date": null,
+    "files": {
+        "scrutinytest/inc/scrutinytest/testresult.hpp": {
+            "docstring": "The class that gets injected in the test body to report the status of the test case"
+        },
+        "scrutinytest/inc/scrutinytest/testcase.hpp": {
+            "docstring": "A base class for every test case"
+        },
+        "scrutinytest/inc/scrutinytest/types.hpp": {
+            "docstring": "Some proejct wide types"
+        },
+        "scrutinytest/inc/scrutinytest/testcase_handler.hpp": {
+            "docstring": "A wrapper that initialize a testcase. Only goal is to leave the TestCase constructor empty so the user can extend easily"
+        },
+        "scrutinytest/inc/scrutinytest/scrutinytest.hpp": {
+            "docstring": "The main header to include for the scrutinytest framework"
+        },
+        "scrutinytest/inc/scrutinytest/testrunner.hpp": {
+            "docstring": "The class that will iterate all test suites and run the test cases"
+        },
+        "scrutinytest/src/scrutinytest.cpp": {
+            "docstring": "The definition of scrutinytest global functions"
+        },
+        "scrutinytest/src/testrunner.cpp": {
+            "docstring": "The class that will iterate all test suites and run the test cases"
+        },
+        "scrutinytest/src/testcase.cpp": {
+            "docstring": "A base class for every test case"
+        },
+        "scrutinytest/src/testresult.cpp": {
+            "docstring": "The class that gets injected in the test body to report the status of the test case"
+        },
+        "tests/src/test_basic.cpp": {
+            "docstring": "Tries the TEST() macro"
+        },
+        "tests/src/main.cpp": {
+            "docstring": "A main that can run some demo tests on an OS"
+        },
+        "tests/src/test_custom_suite.cpp": {
+            "docstring": "Tries the TEST_F() macro"
+        }
+    }
+}

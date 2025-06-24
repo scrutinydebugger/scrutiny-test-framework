@@ -1,3 +1,11 @@
+//    testrunner.cpp
+//        The class that will iterate all test suites and run the test cases
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #include "scrutinytest/testrunner.hpp"
 #include "scrutinytest/testresult.hpp"
 #include <iostream>
@@ -42,7 +50,7 @@ namespace scrutinytest
         unsigned long int pass_count = 0;
         for (test_case_map_t::iterator it = m_test_cases.begin(); it != m_test_cases.end(); it++)
         {
-            std::string const &suitename = it->first;
+            std::string const &suitename = it-  >first;
             std::vector<TestCase *> &testcases = it->second;
             *m_ostream << '\n';
             uint32_t testsuite_start_timestamp_ms = m_timestamp_ms_func();

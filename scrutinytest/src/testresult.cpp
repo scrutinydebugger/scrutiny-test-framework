@@ -1,3 +1,11 @@
+//    testresult.cpp
+//        The class that gets injected in the test body to report the status of the test case
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #include "scrutinytest/testresult.hpp"
 
 #include <ostream>

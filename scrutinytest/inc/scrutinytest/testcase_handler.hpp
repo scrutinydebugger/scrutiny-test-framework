@@ -1,3 +1,12 @@
+//    testcase_handler.hpp
+//        A wrapper that initialize a testcase. Only goal is to leave the TestCase constructor
+//        empty so the user can extend easily
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #ifndef _SCRUTINYTEST_TESTCASE_HANDLER_H_
 #define _SCRUTINYTEST_TESTCASE_HANDLER_H_
 
