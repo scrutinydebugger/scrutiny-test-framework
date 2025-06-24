@@ -9,6 +9,7 @@
 #ifndef _SCRUTINYTEST_HPP_
 #define _SCRUTINYTEST_HPP_
 
+#include "scrutinytest/assertions.hpp"
 #include "scrutinytest/testcase.hpp"
 #include "scrutinytest/testcase_handler.hpp"
 #include "scrutinytest/testresult.hpp"

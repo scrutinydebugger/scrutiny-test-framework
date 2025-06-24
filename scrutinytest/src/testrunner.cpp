@@ -50,7 +50,7 @@ namespace scrutinytest
         unsigned long int pass_count = 0;
         for (test_case_map_t::iterator it = m_test_cases.begin(); it != m_test_cases.end(); it++)
         {
-            std::string const &suitename = it-  >first;
+            std::string const &suitename = it->first;
             std::vector<TestCase *> &testcases = it->second;
             *m_ostream << '\n';
             uint32_t testsuite_start_timestamp_ms = m_timestamp_ms_func();
