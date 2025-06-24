@@ -15,14 +15,12 @@
 #include <string>
 
 #define EXPECT_BUF_EQ(buf1, buf2, size)                                                                                                              \
-    SCRUTINYTEST_EXPECT_WITH_DETAILS(TEST_BUF_EQ(SCRUTINYTEST_RESULT, buf1, buf2, size), "EXPECT_BUF_EQ(" #buf1 "," #buf2 "," #size ")")
+    SCRUTINYTEST_EXPECT_WITH_DETAILS(TEST_BUF_EQ(buf1, buf2, size), "EXPECT_BUF_EQ(" #buf1 "," #buf2 "," #size ")")
 #define ASSERT_BUF_EQ(buf1, buf2, size)                                                                                                              \
-    SCRUTINYTEST_ASSERT_WITH_DETAILS(TEST_BUF_EQ(SCRUTINYTEST_RESULT, buf1, buf2, size), "ASSERT_BUF_EQ(" #buf1 "," #buf2 "," #size ")")
+    SCRUTINYTEST_ASSERT_WITH_DETAILS(TEST_BUF_EQ(buf1, buf2, size), "ASSERT_BUF_EQ(" #buf1 "," #buf2 "," #size ")")
 
-#define EXPECT_BUF_SET(buf, val, size)                                                                                                               \
-    SCRUTINYTEST_EXPECT_WITH_DETAILS(TEST_BUF_SET(SCRUTINYTEST_RESULT, buf, val, size), "EXPECT_BUF_SET(" #buf "," #val "," #size ")")
-#define ASSERT_BUF_SET(buf, val, size)                                                                                                               \
-    SCRUTINYTEST_ASSERT_WITH_DETAILS(TEST_BUF_SET(SCRUTINYTEST_RESULT, buf, val, size), "ASSERT_BUF_SET(" #buf "," #val "," #size ")")
+#define EXPECT_BUF_SET(buf, val, size) SCRUTINYTEST_EXPECT_WITH_DETAILS(TEST_BUF_SET(buf, val, size), "EXPECT_BUF_SET(" #buf "," #val "," #size ")")
+#define ASSERT_BUF_SET(buf, val, size) SCRUTINYTEST_ASSERT_WITH_DETAILS(TEST_BUF_SET(buf, val, size), "ASSERT_BUF_SET(" #buf "," #val "," #size ")")
 
 namespace scrutinytest
 {
@@ -35,7 +33,7 @@ namespace scrutinytest
       public:
         virtual void setUp();
         virtual void tearDown();
-        virtual void body(scrutinytest::TestResult *const result) = 0;
+        virtual void body() = 0;
 
         inline std::string name() const { return m_name; }
 
@@ -45,10 +43,17 @@ namespace scrutinytest
             return this;
         }
 
+        inline TestCase *_set_result(TestResult *const result)
+        {
+            SCRUTINYTEST_RESULT = result;
+            return this;
+        }
+
       protected:
-        bool TEST_BUF_EQ(SCRUTINYTEST_RESULT_ARG, unsigned char const *candidate, unsigned char const *expected, size_t const size);
-        bool TEST_BUF_SET(SCRUTINYTEST_RESULT_ARG, unsigned char const *buffer, unsigned char const val, size_t const size);
+        bool TEST_BUF_EQ(unsigned char const *candidate, unsigned char const *expected, size_t const size);
+        bool TEST_BUF_SET(unsigned char const *buffer, unsigned char const val, size_t const size);
         std::string m_name;
+        TestResult *SCRUTINYTEST_RESULT;
     };
 
 } // namespace scrutinytest

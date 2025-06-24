@@ -1,8 +1,7 @@
 #ifndef _SCRUTINYTEST_MACROS_H_
 #define _SCRUTINYTEST_MACROS_H_
 
-#define SCRUTINYTEST_RESULT _scrutinytest_result
-#define SCRUTINYTEST_RESULT_ARG scrutinytest::TestResult *const SCRUTINYTEST_RESULT
+#define SCRUTINYTEST_RESULT _m_scrutinytest_result
 
 #define SCRUTINYTEST_PASS return true
 #define SCRUTINYTEST_FAIL return scrutinytest::TestFailure() = SCRUTINYTEST_RESULT->msg_buffer() // This returns false always
@@ -25,19 +24,19 @@
     class ClassScrutinyTest_##suitename_##casename : public scrutinytest::TestCase                                                                   \
     {                                                                                                                                                \
       public:                                                                                                                                        \
-        virtual void body(scrutinytest::TestResult *const result);                                                                                   \
+        virtual void body();                                                                                                                         \
     };                                                                                                                                               \
     scrutinytest::TestCaseHandler<ClassScrutinyTest_##suitename_##casename> g_scrutinytest_##suitename##_##casename(#suitename, #casename);          \
-    void ClassScrutinyTest_##suitename_##casename::body(SCRUTINYTEST_RESULT_ARG)
+    void ClassScrutinyTest_##suitename_##casename::body()
 
 #define TEST_F(suiteclass, casename)                                                                                                                 \
     class ClassScrutinyTest_##suiteclass##casename : public suiteclass                                                                               \
     {                                                                                                                                                \
       public:                                                                                                                                        \
-        virtual void body(scrutinytest::TestResult *const result);                                                                                   \
+        virtual void body();                                                                                                                         \
     };                                                                                                                                               \
     scrutinytest::TestCaseHandler<ClassScrutinyTest_##suiteclass##casename> g_scrutinytest_##suiteclass##_##casename(#suiteclass, #casename);        \
-    void ClassScrutinyTest_##suiteclass##casename::body(SCRUTINYTEST_RESULT_ARG)
+    void ClassScrutinyTest_##suiteclass##casename::body()
 
 #define SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2) scrutinytest::TAB << #v1 ": " << (v1) << "\n" << scrutinytest::TAB << #v2 ": " << (v2) << '\n'
 

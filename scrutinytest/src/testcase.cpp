@@ -16,7 +16,7 @@ namespace scrutinytest
     void TestCase::setUp() {}
     void TestCase::tearDown() {}
 
-    bool TestCase::TEST_BUF_EQ(SCRUTINYTEST_RESULT_ARG, unsigned char const *candidate, unsigned char const *expected, size_t const size)
+    bool TestCase::TEST_BUF_EQ(unsigned char const *candidate, unsigned char const *expected, size_t const size)
     {
         for (uint32_t i = 0; i < size; ++i)
         {
@@ -30,7 +30,7 @@ namespace scrutinytest
         SCRUTINYTEST_PASS;
     }
 
-    bool TestCase::TEST_BUF_SET(SCRUTINYTEST_RESULT_ARG, unsigned char const *buffer, unsigned char const val, size_t const size)
+    bool TestCase::TEST_BUF_SET(unsigned char const *buffer, unsigned char const val, size_t const size)
     {
         for (uint32_t i = 0; i < size; ++i)
         {

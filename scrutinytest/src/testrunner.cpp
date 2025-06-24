@@ -61,6 +61,7 @@ namespace scrutinytest
                 uint32_t testcase_start_timestamp_ms = m_timestamp_ms_func();
                 TestCase *testcase = testcases[i];
                 TestResult result(*m_ostream);
+                testcase->_set_result(&result);
 
                 bool error = false;
                 bool pass = false;
@@ -75,7 +76,7 @@ namespace scrutinytest
                     try
                     {
 #endif
-                        testcase->body(&result);
+                        testcase->body();
                         if (result.failure_count() == 0)
                         {
                             pass = true;
