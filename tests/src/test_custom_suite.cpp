@@ -54,6 +54,6 @@ TEST_F(MyTestCase, Case1)
 
 TEST_F(MyTestCase, Case2ThatTakesTime)
 {
-    for (volatile int i = 0; i < 1000000000; i++)
+    for (volatile int i = 0; i < 100000000; i++)
         ;
 }

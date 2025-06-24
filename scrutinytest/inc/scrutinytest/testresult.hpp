@@ -19,11 +19,13 @@ namespace scrutinytest
       public:
         TestResult(std::ostream &stream);
         std::ostream &record_failure();
+        std::ostream &record_success();
         inline unsigned int failure_count() const { return m_failure_count; }
+        inline std::ostream &msg_buffer() { return m_buffer_stream; }
+        std::string msg_buffer_str();
 
-      private:
-        std::stringstream m_failure_log_stream;
         std::ostream &m_ostream;
+        std::ostringstream m_buffer_stream;
         unsigned int m_failure_count;
     };
 } // namespace scrutinytest

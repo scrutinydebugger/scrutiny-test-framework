@@ -14,5 +14,6 @@
 namespace scrutinytest
 {
     typedef uint32_t (*timestamp_ms_func_t)();
-}
+    static std::string const TAB = "  ";
+} // namespace scrutinytest
 #endif
