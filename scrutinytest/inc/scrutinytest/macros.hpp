@@ -71,4 +71,4 @@
 #define ASSERT_TRUE(v1) SCRUTINY_BOOL_ASSERT(v1, "ASSERT_TRUE", !!) // Double negation for a positive without leaving the field blank
 #define ASSERT_FALSE(v1) SCRUTINY_BOOL_ASSERT(v1, "ASSERT_FALSE", !)
 
-#endif
+#endif //_SCRUTINYTEST_MACROS_H_
