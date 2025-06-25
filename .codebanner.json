@@ -53,6 +53,12 @@
         },
         "tests/src/test_custom_suite.cpp": {
             "docstring": "Tries the TEST_F() macro"
+        },
+        "scrutinytest/inc/scrutinytest/macros.hpp": {
+            "docstring": "Project wide macros"
+        },
+        "tests/src/test_expect_assert_extensions.cpp": {
+            "docstring": "Validate custom assetion fucntions in a test suite"
         }
     }
 }
