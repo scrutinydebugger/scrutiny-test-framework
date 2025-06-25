@@ -58,7 +58,7 @@
 #define EXPECT_GT(v1, v2) SCRUTINY_RELATIONAL_EXPECT_2ARGS(v1, v2, "EXPECT_GT", >)
 #define EXPECT_GE(v1, v2) SCRUTINY_RELATIONAL_EXPECT_2ARGS(v1, v2, "EXPECT_GE", >=)
 
-#define EXPECT_TRUE(v1) SCRUTINY_BOOL_EXPECT(v1, "EXPECT_TRUE", !!)
+#define EXPECT_TRUE(v1) SCRUTINY_BOOL_EXPECT(v1, "EXPECT_TRUE", !!) // Double negation for a positive without leaving the field blank
 #define EXPECT_FALSE(v1) SCRUTINY_BOOL_EXPECT(v1, "EXPECT_FALSE", !)
 
 #define ASSERT_EQ(v1, v2) SCRUTINY_RELATIONAL_ASSERT_2ARGS(v1, v2, "ASSERT_EQ", ==)
@@ -68,7 +68,7 @@
 #define ASSERT_GT(v1, v2) SCRUTINY_RELATIONAL_ASSERT_2ARGS(v1, v2, "ASSERT_GT", >)
 #define ASSERT_GE(v1, v2) SCRUTINY_RELATIONAL_ASSERT_2ARGS(v1, v2, "ASSERT_GE", >=)
 
-#define ASSERT_TRUE(v1) SCRUTINY_BOOL_ASSERT(v1, "ASSERT_TRUE", )
+#define ASSERT_TRUE(v1) SCRUTINY_BOOL_ASSERT(v1, "ASSERT_TRUE", !!) // Double negation for a positive without leaving the field blank
 #define ASSERT_FALSE(v1) SCRUTINY_BOOL_ASSERT(v1, "ASSERT_FALSE", !)
 
 #endif
