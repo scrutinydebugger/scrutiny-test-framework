@@ -1,3 +1,10 @@
+//    test_expect_assert_extensions.cpp
+//        Validate custom assetion fucntions in a test suite
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-test-framework)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
 
 #include "scrutinytest/scrutinytest.hpp"
 

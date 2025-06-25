@@ -2,7 +2,7 @@
 //        The class that will iterate all test suites and run the test cases
 //
 //   - License : MIT - See LICENSE file.
-//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-test-framework)
 //
 //   Copyright (c) 2025 Scrutiny Debugger
 

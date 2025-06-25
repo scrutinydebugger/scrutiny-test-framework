@@ -2,7 +2,7 @@
 //        Tries the TEST_F() macro
 //
 //   - License : MIT - See LICENSE file.
-//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-embedded)
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-test-framework)
 //
 //   Copyright (c) 2025 Scrutiny Debugger
 
