@@ -10,17 +10,18 @@
 #define _SCRUTINYTEST_HPP_
 
 #include "scrutinytest/macros.hpp"
+#include "scrutinytest/streams.hpp"
 #include "scrutinytest/testcase.hpp"
 #include "scrutinytest/testcase_handler.hpp"
 #include "scrutinytest/testresult.hpp"
 #include "scrutinytest/testrunner.hpp"
 #include "scrutinytest/types.hpp"
 
-#include <ostream>
 #include <stdint.h>
 
 namespace scrutinytest
 {
+
     class AssertShenanigan
     {
       public:
@@ -41,7 +42,7 @@ namespace scrutinytest
     };
 
     int main();
-    void set_ostream(std::ostream *ostream);
+    void set_ostream(scrutinytest::ostream *ostream);
     void set_timestamp_func(timestamp_ms_func_t func);
 
 } // namespace scrutinytest

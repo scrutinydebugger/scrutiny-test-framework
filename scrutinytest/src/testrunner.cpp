@@ -7,11 +7,19 @@
 //   Copyright (c) 2025 Scrutiny Debugger
 
 #include "scrutinytest/testrunner.hpp"
+#include "scrutinytest/streams.hpp"
 #include "scrutinytest/testresult.hpp"
-#include <iostream>
 
 namespace scrutinytest
 {
+
+#if SCRUTINYTEST_HAS_STREAM
+    static scrutinytest::NullBuffer s_nullbuffer;
+    static scrutinytest::ostream s_nullstream(&s_nullbuffer);
+#else
+    static scrutinytest::ostream s_nullstream;
+#endif
+
     uint32_t default_timestamp_ms_func()
     {
         return 0;
@@ -24,7 +32,7 @@ namespace scrutinytest
     }
 
     TestRunner::TestRunner() :
-        m_ostream(&std::cout),
+        m_ostream(&s_nullstream),
         m_test_cases(),
         m_init_error_str(),
         m_timestamp_ms_func(default_timestamp_ms_func),
@@ -33,7 +41,7 @@ namespace scrutinytest
     {
     }
 
-    void set_ostream(std::ostream *stream);
+    void set_ostream(scrutinytest::ostream *stream);
 
     int TestRunner::run()
     {
@@ -54,7 +62,7 @@ namespace scrutinytest
             std::vector<TestCase *> &testcases = it->second;
             *m_ostream << '\n';
             uint32_t testsuite_start_timestamp_ms = m_timestamp_ms_func();
-            print_suite_start(suitename, testcases.size()) << std::endl;
+            print_suite_start(suitename, testcases.size()) << ENDL;
 
             for (int i = 0; i < testcases.size(); i++)
             {
@@ -70,7 +78,7 @@ namespace scrutinytest
                 try
                 {
 #endif
-                    print_run_start(suitename, testcase->name()) << std::endl;
+                    print_run_start(suitename, testcase->name()) << ENDL;
                     testcase->SetUp();
 #if SCRUTINYTEST_HAVE_EXCEPTIONS
                     try
@@ -143,7 +151,7 @@ namespace scrutinytest
                 if (error)
                 {
                     error_count++;
-                    *m_ostream << error_str << std::endl;
+                    *m_ostream << error_str << ENDL;
                     print_run_error();
                 }
                 else if (!pass)
@@ -157,11 +165,11 @@ namespace scrutinytest
                     print_run_ok();
                 }
                 uint32_t testcase_time_ms = m_timestamp_ms_func() - testcase_start_timestamp_ms;
-                print_run_end(suitename, testcase->name(), testcase_time_ms) << std::endl;
+                print_run_end(suitename, testcase->name(), testcase_time_ms) << ENDL;
             }
             uint32_t testsuite_time_ms = m_timestamp_ms_func() - testsuite_start_timestamp_ms;
 
-            print_separator() << testcases.size() << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << std::endl;
+            print_separator() << testcases.size() << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << ENDL;
         }
         unsigned long int total_test = error_count + fail_count + pass_count;
         *m_ostream << "\n" << total_test << " tests executed in ";
@@ -178,7 +186,7 @@ namespace scrutinytest
 
             *m_ostream << total_exec_time_sec << "." << total_exec_time_decimal_part << "s";
         }
-        *m_ostream << ". (" << error_count << " errors, " << fail_count << " failures, " << pass_count << " successes)" << std::endl;
+        *m_ostream << ". (" << error_count << " errors, " << fail_count << " failures, " << pass_count << " successes)" << ENDL;
 
         if (error_count > 0 || fail_count > 0)
         {
@@ -189,7 +197,7 @@ namespace scrutinytest
         return 0;
     }
 
-    void TestRunner::set_ostream(std::ostream *const ostream)
+    void TestRunner::set_ostream(scrutinytest::ostream *const ostream)
     {
         m_ostream = ostream;
     }
@@ -199,42 +207,42 @@ namespace scrutinytest
         m_timestamp_ms_func = func;
     }
 
-    std::ostream &TestRunner::print_fatal(std::string const &s)
+    scrutinytest::ostream &TestRunner::print_fatal(std::string const &s)
     {
-        return *m_ostream << "[FATAL ERROR] " << s << std::endl;
+        return *m_ostream << "[FATAL ERROR] " << s << ENDL;
     }
 
-    std::ostream &TestRunner::print_separator()
+    scrutinytest::ostream &TestRunner::print_separator()
     {
         return *m_ostream << "[----------] ";
     }
 
-    std::ostream &TestRunner::print_run_start(std::string const &suitename, std::string const &testcase_name)
+    scrutinytest::ostream &TestRunner::print_run_start(std::string const &suitename, std::string const &testcase_name)
     {
         return *m_ostream << "[ Run      ] " << suitename << "." << testcase_name;
     }
 
-    std::ostream &TestRunner::print_run_ok()
+    scrutinytest::ostream &TestRunner::print_run_ok()
     {
         return *m_ostream << "[       OK ] ";
     }
 
-    std::ostream &TestRunner::print_run_error()
+    scrutinytest::ostream &TestRunner::print_run_error()
     {
         return *m_ostream << "[    Error ] ";
     }
 
-    std::ostream &TestRunner::print_run_fail()
+    scrutinytest::ostream &TestRunner::print_run_fail()
     {
         return *m_ostream << "[     Fail ] ";
     }
 
-    std::ostream &TestRunner::print_run_end(std::string const &suitename, std::string const &testcase_name, unsigned long time_ms)
+    scrutinytest::ostream &TestRunner::print_run_end(std::string const &suitename, std::string const &testcase_name, unsigned long time_ms)
     {
         return *m_ostream << suitename << "." << testcase_name << " (" << time_ms << " ms)";
     }
 
-    std::ostream &TestRunner::print_suite_start(std::string const &suitename, size_t const testcase_count)
+    scrutinytest::ostream &TestRunner::print_suite_start(std::string const &suitename, size_t const testcase_count)
     {
         print_separator() << testcase_count;
         if (testcase_count > 1)

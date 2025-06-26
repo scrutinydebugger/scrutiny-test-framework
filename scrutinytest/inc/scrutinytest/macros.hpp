@@ -14,6 +14,26 @@
 #define SCRUTINYTEST_PASS return true
 #define SCRUTINYTEST_FAIL return scrutinytest::TestFailure() = SCRUTINYTEST_RESULT->msg_buffer() // This returns false always
 
+#ifndef SCRUTINYTEST_COMPACT
+#ifdef NDEBUG
+#define SCRUTINYTEST_COMPACT 1
+#else
+#define SCRUTINYTEST_COMPACT 0
+#endif
+#endif
+
+#if SCRUTINYTEST_COMPACT
+
+#define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
+    if (!(BOOL_PREDICATE))                                                                                                                           \
+    SCRUTINYTEST_RESULT->record_failure() << "FAILED\n" << SCRUTINYTEST_RESULT->msg_buffer_str()
+
+#define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
+    if (!(BOOL_PREDICATE))                                                                                                                           \
+    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED\n" << SCRUTINYTEST_RESULT->msg_buffer_str()
+
+#else
+
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
     SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << DETAILS << " : " << __FILE__ << ":" << __LINE__ << '\n'                                   \
@@ -24,6 +44,7 @@
     return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure()                                                                  \
                                               << "FAILED: " << DETAILS << " : " << __FILE__ << ":" << __LINE__ << '\n'                               \
                                               << SCRUTINYTEST_RESULT->msg_buffer_str()
+#endif
 
 #define SCRUTINYTEST_EXPECT(BOOL_PREDICATE) SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, "")
 #define SCRUTINYTEST_ASSERT(BOOL_PREDICATE) SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, "")
