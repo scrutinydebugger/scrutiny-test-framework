@@ -7,13 +7,12 @@
 //   Copyright (c) 2025 Scrutiny Debugger
 
 #include "scrutinytest/scrutinytest.hpp"
+#include "scrutinytest/streams.hpp"
 #include "scrutinytest/testcase_handler.hpp"
-
-#include <ostream>
 
 namespace scrutinytest
 {
-    void set_ostream(std::ostream *ostream)
+    void set_ostream(scrutinytest::ostream *ostream)
     {
         MainRunner::get()->set_ostream(ostream);
     }

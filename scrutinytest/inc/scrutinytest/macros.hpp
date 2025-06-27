@@ -9,10 +9,35 @@
 #ifndef _SCRUTINYTEST_MACROS_H_
 #define _SCRUTINYTEST_MACROS_H_
 
+#include "scrutinytest/config.hpp"
+
 #define SCRUTINYTEST_RESULT _m_scrutinytest_result
 
 #define SCRUTINYTEST_PASS return true
 #define SCRUTINYTEST_FAIL return scrutinytest::TestFailure() = SCRUTINYTEST_RESULT->msg_buffer() // This returns false always
+
+#if SCRUTINYTEST_NO_OUTPUT
+
+#define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
+    if (!(BOOL_PREDICATE))                                                                                                                           \
+    SCRUTINYTEST_RESULT->record_failure() << "FAILED\n"
+
+#define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
+    if (!(BOOL_PREDICATE))                                                                                                                           \
+    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED\n"
+
+#else
+
+#if SCRUTINYTEST_NO_DETAILS
+#define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
+    if (!(BOOL_PREDICATE))                                                                                                                           \
+    SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << '\n' << SCRUTINYTEST_RESULT->msg_buffer_str()
+
+#define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
+    if (!(BOOL_PREDICATE))                                                                                                                           \
+    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << '\n' << SCRUTINYTEST_RESULT->msg_buffer_str()
+
+#else
 
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
@@ -24,6 +49,8 @@
     return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure()                                                                  \
                                               << "FAILED: " << DETAILS << " : " << __FILE__ << ":" << __LINE__ << '\n'                               \
                                               << SCRUTINYTEST_RESULT->msg_buffer_str()
+#endif
+#endif
 
 #define SCRUTINYTEST_EXPECT(BOOL_PREDICATE) SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, "")
 #define SCRUTINYTEST_ASSERT(BOOL_PREDICATE) SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, "")
@@ -37,14 +64,14 @@
     scrutinytest::TestCaseHandler<ClassScrutinyTest_##suitename_##casename> g_scrutinytest_##suitename##_##casename(#suitename, #casename);          \
     void ClassScrutinyTest_##suitename_##casename::body()
 
-#define TEST_F(suiteclass, casename)                                                                                                                 \
-    class ClassScrutinyTest_##suiteclass##casename : public suiteclass                                                                               \
+#define TEST_F(caseclass, casename)                                                                                                                  \
+    class ClassScrutinyTest_##caseclass##casename : public caseclass                                                                                 \
     {                                                                                                                                                \
       public:                                                                                                                                        \
         virtual void body();                                                                                                                         \
     };                                                                                                                                               \
-    scrutinytest::TestCaseHandler<ClassScrutinyTest_##suiteclass##casename> g_scrutinytest_##suiteclass##_##casename(#suiteclass, #casename);        \
-    void ClassScrutinyTest_##suiteclass##casename::body()
+    scrutinytest::TestCaseHandler<ClassScrutinyTest_##caseclass##casename> g_scrutinytest_##caseclass##_##casename(#caseclass, #casename);           \
+    void ClassScrutinyTest_##caseclass##casename::body()
 
 #define SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2) scrutinytest::TAB << #v1 ": " << (v1) << "\n" << scrutinytest::TAB << #v2 ": " << (v2) << '\n'
 

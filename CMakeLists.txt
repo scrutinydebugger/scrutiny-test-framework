@@ -1,9 +1,21 @@
 cmake_minimum_required(VERSION 3.14)
 
-option(BUILD_TESTS "Activate test suite" OFF)
-option(DISABLE_EXCEPTIONS "Forcefully disable the suage of exceptions" OFF)
+option(SCRUTINYTEST_BUILD_TESTS "Build some demo test for testing the test framework" OFF)
+option(SCRUTINYTEST_DISABLE_EXCEPTIONS "Forcefully disable the usage of exceptions" OFF)
+option(SCRUTINYTEST_NO_DETAILS "Avoid printing debug details on a failure. Save some const emmory" OFF)
+option(SCRUTINYTEST_NO_OUTPUT "Do not print at all. For JTAG debug only" OFF)
+option(SCRUTINYTEST_MAX_TEST_CASES "Maximum number of test cases (static allocation)" 1024)
+option(SCRUTINYTEST_MAX_TEST_SUITES "Maximum number of test suite (static allocation)" 256)
 
-if (DISABLE_EXCEPTIONS)
+
+add_compile_definitions( 
+    SCRUTINYTEST_NO_DETAILS=$<BOOL:${SCRUTINYTEST_NO_DETAILS}>
+    SCRUTINYTEST_NO_OUTPUT=$<BOOL:${SCRUTINYTEST_NO_OUTPUT}>
+    SCRUTINYTEST_MAX_TEST_CASES=${SCRUTINYTEST_MAX_TEST_CASES}
+    SCRUTINYTEST_MAX_TEST_SUITES=${SCRUTINYTEST_MAX_TEST_SUITES}
+)
+
+if (SCRUTINYTEST_DISABLE_EXCEPTIONS)
     add_compile_definitions(SCRUTINYTEST_HAVE_EXCEPTIONS=0)
 else()
     include(CheckCXXSourceCompiles)
@@ -25,6 +37,6 @@ else()
 endif()
 
 add_subdirectory(scrutinytest)
-if (BUILD_TESTS)
+if (SCRUTINYTEST_BUILD_TESTS)
     add_subdirectory(tests)
 endif()

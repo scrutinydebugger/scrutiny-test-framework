@@ -10,8 +10,6 @@
 #ifndef _SCRUTINYTEST_TESTCASE_HANDLER_H_
 #define _SCRUTINYTEST_TESTCASE_HANDLER_H_
 
-#include <string>
-
 #include "scrutinytest/testcase.hpp"
 #include "scrutinytest/testrunner.hpp"
 
@@ -20,12 +18,13 @@ namespace scrutinytest
     template <typename CaseClass> class TestCaseHandler
     {
       public:
-        TestCaseHandler(std::string const &suitename, std::string const &casename) :
+        TestCaseHandler(char const *const suitename, char const *const casename) :
             m_testcase()
         {
+            m_testcase._set_suite(suitename);
             m_testcase._set_name(casename);
 
-            MainRunner::get()->register_test_case(suitename, &m_testcase);
+            MainRunner::get()->register_test_case(&m_testcase);
         }
 
       private:

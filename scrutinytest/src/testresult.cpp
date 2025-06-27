@@ -7,32 +7,34 @@
 //   Copyright (c) 2025 Scrutiny Debugger
 
 #include "scrutinytest/testresult.hpp"
+#include "scrutinytest/streams.hpp"
 #include "scrutinytest/types.hpp"
 
-#include <ostream>
-#include <sstream>
+#if !SCRUTINYTEST_NO_OUTPUT
 #include <string>
+#endif
 
 namespace scrutinytest
 {
-    TestResult::TestResult(std::ostream &stream) :
+    TestResult::TestResult(scrutinytest::ostream &stream) :
         m_ostream(stream),
         m_buffer_stream(),
         m_failure_count(0)
     {
     }
 
-    std::ostream &TestResult::record_failure()
+    scrutinytest::ostream &TestResult::record_failure()
     {
         m_failure_count++;
         return m_ostream;
     }
 
-    std::ostream &TestResult::record_success()
+    scrutinytest::ostream &TestResult::record_success()
     {
         return m_ostream;
     }
 
+#if !SCRUTINYTEST_NO_OUTPUT
     std::string TestResult::msg_buffer_str()
     {
         std::string str = m_buffer_stream.str();
@@ -42,4 +44,5 @@ namespace scrutinytest
         }
         return str;
     }
+#endif
 } // namespace scrutinytest

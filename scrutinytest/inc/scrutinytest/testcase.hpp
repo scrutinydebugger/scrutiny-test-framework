@@ -12,7 +12,6 @@
 #include "scrutinytest/macros.hpp"
 #include "scrutinytest/testrunner.hpp"
 #include <stddef.h>
-#include <string>
 
 #define EXPECT_BUF_EQ(buf1, buf2, size)                                                                                                              \
     SCRUTINYTEST_EXPECT_WITH_DETAILS(TEST_BUF_EQ(buf1, buf2, size), "EXPECT_BUF_EQ(" #buf1 "," #buf2 "," #size ")")
@@ -28,25 +27,30 @@
 namespace scrutinytest
 {
     class TestResult;
+    class TestSuite;
 
     class TestCase
     {
         friend class TestRunner;
 
       public:
-        inline std::string name() const { return m_name; }
+        inline char const *name() const { return m_name; }
 
-        inline TestCase *_set_name(std::string const &name)
+        inline TestCase *_set_name(char const *const &name)
         {
             m_name = name;
             return this;
         }
 
+        inline void _set_suite(char const *const suite) { m_suite = suite; }
+        inline char const *suite() const { return m_suite; }
+
       protected:
         bool TEST_BUF_EQ(unsigned char const *candidate, unsigned char const *expected, size_t const size);
         bool TEST_BUF_SET(unsigned char const *buffer, unsigned char const val, size_t const size);
         bool TEST_IS_NEAR(double const a, double const b, double const abs_err = 1e-12);
-        std::string m_name;
+        char const *m_name;
+        char const *m_suite;
         TestResult *SCRUTINYTEST_RESULT;
 
       private:

@@ -7,11 +7,25 @@
 //   Copyright (c) 2025 Scrutiny Debugger
 
 #include "scrutinytest/testrunner.hpp"
+#include "scrutinytest/streams.hpp"
 #include "scrutinytest/testresult.hpp"
-#include <iostream>
+
+#if SCRUTINYTEST_HAVE_EXCEPTIONS
+#include <exception>
+#endif
+
+#include <stdlib.h>
 
 namespace scrutinytest
 {
+
+#if !SCRUTINYTEST_NO_OUTPUT
+    static scrutinytest::NullBuffer s_nullbuffer;
+    static scrutinytest::ostream s_nullstream(&s_nullbuffer);
+#else
+    static scrutinytest::ostream s_nullstream;
+#endif
+
     uint32_t default_timestamp_ms_func()
     {
         return 0;
@@ -24,16 +38,29 @@ namespace scrutinytest
     }
 
     TestRunner::TestRunner() :
-        m_ostream(&std::cout),
-        m_test_cases(),
-        m_init_error_str(),
+        m_ostream(&s_nullstream),
+        m_init_error_str(NULL),
         m_timestamp_ms_func(default_timestamp_ms_func),
         m_init_error(false),
-        m_success(false)
+        m_success(false),
+        m_testcase_storage(),
+        m_testsuite_storage(),
+        m_testcase_storage_cursor(0),
+        m_testsuite_storage_cursor(0)
+
     {
+        for (unsigned int i = 0; i < sizeof(m_testcase_storage) / sizeof(m_testcase_storage[0]); i++)
+        {
+            m_testcase_storage[i].next = NULL;
+            m_testcase_storage[i].testcase = NULL;
+        }
+        for (unsigned int i = 0; i < sizeof(m_testsuite_storage) / sizeof(m_testsuite_storage[0]); i++)
+        {
+            m_testsuite_storage[i] = NULL;
+        }
     }
 
-    void set_ostream(std::ostream *stream);
+    void set_ostream(scrutinytest::ostream *stream);
 
     int TestRunner::run()
     {
@@ -48,29 +75,48 @@ namespace scrutinytest
         unsigned long int error_count = 0;
         unsigned long int fail_count = 0;
         unsigned long int pass_count = 0;
-        for (test_case_map_t::iterator it = m_test_cases.begin(); it != m_test_cases.end(); it++)
+        for (unsigned long int suite_it = 0; suite_it < m_testsuite_storage_cursor; suite_it++)
         {
-            std::string const &suitename = it->first;
-            std::vector<TestCase *> &testcases = it->second;
+            if (m_testsuite_storage[suite_it] == NULL)
+            {
+                continue;
+            }
+            TestCaseLinkedList *node = m_testsuite_storage[suite_it];
+
+            TestCase *testcase = m_testsuite_storage[suite_it]->testcase;
+            if (testcase == NULL)
+            {
+                continue;
+            }
+
+            unsigned int nb_case = 1;
+            TestCaseLinkedList *temp = node;
+            while ((temp = temp->next) != NULL)
+            {
+                nb_case++;
+            }
+
+            char const *suitename = testcase->suite();
+
             *m_ostream << '\n';
             uint32_t testsuite_start_timestamp_ms = m_timestamp_ms_func();
-            print_suite_start(suitename, testcases.size()) << std::endl;
+            print_suite_start(suitename, nb_case) << ENDL;
 
-            for (int i = 0; i < testcases.size(); i++)
+            do
             {
                 uint32_t testcase_start_timestamp_ms = m_timestamp_ms_func();
-                TestCase *testcase = testcases[i];
+                TestCase *testcase = node->testcase;
                 TestResult result(*m_ostream);
                 testcase->_set_result(&result);
 
                 bool error = false;
                 bool pass = false;
-                std::string error_str;
+                char const *error_str = NULL;
 #if SCRUTINYTEST_HAVE_EXCEPTIONS
                 try
                 {
 #endif
-                    print_run_start(suitename, testcase->name()) << std::endl;
+                    print_run_start(suitename, testcase->name()) << ENDL;
                     testcase->SetUp();
 #if SCRUTINYTEST_HAVE_EXCEPTIONS
                     try
@@ -87,11 +133,6 @@ namespace scrutinytest
                     {
                         error = true;
                         error_str = e.what();
-                    }
-                    catch (std::string const &e)
-                    {
-                        error = true;
-                        error_str = e;
                     }
                     catch (char const *e)
                     {
@@ -115,14 +156,6 @@ namespace scrutinytest
                         error_str = e.what();
                     }
                 }
-                catch (std::string const &e)
-                {
-                    if (!error)
-                    {
-                        error = true;
-                        error_str = e;
-                    }
-                }
                 catch (char const *e)
                 {
                     if (!error)
@@ -143,7 +176,7 @@ namespace scrutinytest
                 if (error)
                 {
                     error_count++;
-                    *m_ostream << error_str << std::endl;
+                    *m_ostream << error_str << ENDL;
                     print_run_error();
                 }
                 else if (!pass)
@@ -157,12 +190,13 @@ namespace scrutinytest
                     print_run_ok();
                 }
                 uint32_t testcase_time_ms = m_timestamp_ms_func() - testcase_start_timestamp_ms;
-                print_run_end(suitename, testcase->name(), testcase_time_ms) << std::endl;
-            }
+                print_run_end(suitename, testcase->name(), testcase_time_ms) << ENDL;
+            } while ((node = node->next) != NULL);
             uint32_t testsuite_time_ms = m_timestamp_ms_func() - testsuite_start_timestamp_ms;
 
-            print_separator() << testcases.size() << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << std::endl;
+            print_separator() << nb_case << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << ENDL;
         }
+
         unsigned long int total_test = error_count + fail_count + pass_count;
         *m_ostream << "\n" << total_test << " tests executed in ";
 
@@ -178,7 +212,7 @@ namespace scrutinytest
 
             *m_ostream << total_exec_time_sec << "." << total_exec_time_decimal_part << "s";
         }
-        *m_ostream << ". (" << error_count << " errors, " << fail_count << " failures, " << pass_count << " successes)" << std::endl;
+        *m_ostream << ". (" << error_count << " errors, " << fail_count << " failures, " << pass_count << " successes)" << ENDL;
 
         if (error_count > 0 || fail_count > 0)
         {
@@ -189,7 +223,7 @@ namespace scrutinytest
         return 0;
     }
 
-    void TestRunner::set_ostream(std::ostream *const ostream)
+    void TestRunner::set_ostream(scrutinytest::ostream *const ostream)
     {
         m_ostream = ostream;
     }
@@ -199,42 +233,42 @@ namespace scrutinytest
         m_timestamp_ms_func = func;
     }
 
-    std::ostream &TestRunner::print_fatal(std::string const &s)
+    scrutinytest::ostream &TestRunner::print_fatal(char const *const s)
     {
-        return *m_ostream << "[FATAL ERROR] " << s << std::endl;
+        return *m_ostream << "[FATAL ERROR] " << s << ENDL;
     }
 
-    std::ostream &TestRunner::print_separator()
+    scrutinytest::ostream &TestRunner::print_separator()
     {
         return *m_ostream << "[----------] ";
     }
 
-    std::ostream &TestRunner::print_run_start(std::string const &suitename, std::string const &testcase_name)
+    scrutinytest::ostream &TestRunner::print_run_start(char const *const suitename, char const *const testcase_name)
     {
         return *m_ostream << "[ Run      ] " << suitename << "." << testcase_name;
     }
 
-    std::ostream &TestRunner::print_run_ok()
+    scrutinytest::ostream &TestRunner::print_run_ok()
     {
         return *m_ostream << "[       OK ] ";
     }
 
-    std::ostream &TestRunner::print_run_error()
+    scrutinytest::ostream &TestRunner::print_run_error()
     {
         return *m_ostream << "[    Error ] ";
     }
 
-    std::ostream &TestRunner::print_run_fail()
+    scrutinytest::ostream &TestRunner::print_run_fail()
     {
         return *m_ostream << "[     Fail ] ";
     }
 
-    std::ostream &TestRunner::print_run_end(std::string const &suitename, std::string const &testcase_name, unsigned long time_ms)
+    scrutinytest::ostream &TestRunner::print_run_end(char const *const suitename, char const *const testcase_name, unsigned long time_ms)
     {
         return *m_ostream << suitename << "." << testcase_name << " (" << time_ms << " ms)";
     }
 
-    std::ostream &TestRunner::print_suite_start(std::string const &suitename, size_t const testcase_count)
+    scrutinytest::ostream &TestRunner::print_suite_start(char const *const suitename, size_t const testcase_count)
     {
         print_separator() << testcase_count;
         if (testcase_count > 1)
@@ -249,15 +283,47 @@ namespace scrutinytest
         return *m_ostream;
     }
 
-    void TestRunner::register_test_case(std::string const &suite_name, TestCase *const testcase)
+    unsigned long int TestRunner::register_test_case(TestCase *const testcase)
     {
-        test_case_map_t::iterator iter = m_test_cases.find(suite_name);
-        if (iter == m_test_cases.end())
+        if (m_testcase_storage_cursor >= sizeof(m_testcase_storage) / sizeof(m_testcase_storage[0]))
         {
-            m_test_cases[suite_name] = std::vector<TestCase *>();
+            m_init_error = true;
+            m_init_error_str = "Too much tests";
         }
 
-        m_test_cases[suite_name].push_back(testcase);
+        if (m_init_error)
+        {
+            return 0;
+        }
+        unsigned long int const pos = m_testcase_storage_cursor++;
+
+        TestCaseLinkedList *prev = NULL;
+        for (unsigned int i = 0; i < pos; i++)
+        {
+            TestCaseLinkedList *const node = &m_testcase_storage[i];
+            if (node->testcase->suite() == testcase->suite())
+            {
+                prev = node;
+            }
+        }
+
+        m_testcase_storage[pos].testcase = testcase;
+        if (prev != NULL)
+        {
+            prev->next = &m_testcase_storage[pos];
+        }
+        else
+        {
+            if (m_testsuite_storage_cursor >= sizeof(m_testsuite_storage) / sizeof(m_testsuite_storage[0]))
+            {
+                m_init_error = true;
+                m_init_error_str = "Too much test suites";
+                return 0;
+            }
+
+            m_testsuite_storage[m_testsuite_storage_cursor++] = &m_testcase_storage[pos];
+        }
+        return pos;
     }
 
 } // namespace scrutinytest

@@ -9,7 +9,6 @@
 #include "scrutinytest/scrutinytest.hpp"
 
 #include <stddef.h>
-#include <string>
 
 namespace scrutinytest
 {

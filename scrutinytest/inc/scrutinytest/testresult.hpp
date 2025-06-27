@@ -9,23 +9,28 @@
 #ifndef _SCRUTINYTEST_TESTRESULT_
 #define _SCRUTINYTEST_TESTRESULT_
 
-#include <ostream>
-#include <sstream>
+#include "scrutinytest/streams.hpp"
+
+#if !SCRUTINYTEST_NO_OUTPUT
+#include <string>
+#endif
 
 namespace scrutinytest
 {
     class TestResult
     {
       public:
-        TestResult(std::ostream &stream);
-        std::ostream &record_failure();
-        std::ostream &record_success();
+        TestResult(scrutinytest::ostream &stream);
+        scrutinytest::ostream &record_failure();
+        scrutinytest::ostream &record_success();
         inline unsigned int failure_count() const { return m_failure_count; }
-        inline std::ostream &msg_buffer() { return m_buffer_stream; }
+        inline scrutinytest::ostream &msg_buffer() { return m_buffer_stream; }
+#if !SCRUTINYTEST_NO_OUTPUT
         std::string msg_buffer_str();
+#endif
 
-        std::ostream &m_ostream;
-        std::ostringstream m_buffer_stream;
+        scrutinytest::ostream &m_ostream;
+        scrutinytest::ostringstream m_buffer_stream;
         unsigned int m_failure_count;
     };
 } // namespace scrutinytest
