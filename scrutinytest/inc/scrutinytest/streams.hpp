@@ -17,8 +17,6 @@
 #define ENDL ""
 #endif
 
-#include <string>
-
 namespace scrutinytest
 {
 #if SCRUTINYTEST_HAS_STREAM
@@ -32,7 +30,7 @@ namespace scrutinytest
     class NullStream
     {
       public:
-        inline std::string str() { return ""; }
+        inline char const *str() { return ""; }
     };
 
     template <typename T> NullStream &operator<<(NullStream &s, T const &arg)

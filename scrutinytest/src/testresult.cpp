@@ -10,7 +10,9 @@
 #include "scrutinytest/streams.hpp"
 #include "scrutinytest/types.hpp"
 
+#if !SCRUTINYTEST_COMPACT
 #include <string>
+#endif
 
 namespace scrutinytest
 {
@@ -32,6 +34,7 @@ namespace scrutinytest
         return m_ostream;
     }
 
+#if !SCRUTINYTEST_COMPACT
     std::string TestResult::msg_buffer_str()
     {
         std::string str = m_buffer_stream.str();
@@ -41,4 +44,5 @@ namespace scrutinytest
         }
         return str;
     }
+#endif
 } // namespace scrutinytest

@@ -11,6 +11,10 @@
 
 #include "scrutinytest/streams.hpp"
 
+#if !SCRUTINYTEST_COMPACT
+#include <string>
+#endif
+
 namespace scrutinytest
 {
     class TestResult
@@ -21,7 +25,9 @@ namespace scrutinytest
         scrutinytest::ostream &record_success();
         inline unsigned int failure_count() const { return m_failure_count; }
         inline scrutinytest::ostream &msg_buffer() { return m_buffer_stream; }
+#if !SCRUTINYTEST_COMPACT
         std::string msg_buffer_str();
+#endif
 
         scrutinytest::ostream &m_ostream;
         scrutinytest::ostringstream m_buffer_stream;

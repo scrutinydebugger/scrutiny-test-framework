@@ -9,18 +9,23 @@
 #ifndef _SCRUTINY_TESTRUNNER_HPP_
 #define _SCRUTINY_TESTRUNNER_HPP_
 
-#include <map>
-#include <string>
-#include <vector>
-
 #include "scrutinytest/streams.hpp"
 #include "scrutinytest/testcase.hpp"
 #include "scrutinytest/types.hpp"
+#include "stddef.h"
+
+#define MAX_TEST_CASES 256
+#define MAX_TEST_SUITES 64
 
 namespace scrutinytest
 {
     class TestCase;
-    typedef std::map<std::string, std::vector<TestCase *> > test_case_map_t;
+
+    struct TestCaseLinkedList
+    {
+        TestCase *testcase;
+        TestCaseLinkedList *next;
+    };
 
     class TestRunner
     {
@@ -28,27 +33,31 @@ namespace scrutinytest
         TestRunner();
         void set_ostream(scrutinytest::ostream *const stream);
         void set_timestamp_func(timestamp_ms_func_t func);
-        void register_test_case(std::string const &suite_name, TestCase *const testcase);
+        unsigned long int register_test_case(TestCase *const testcase);
         int run();
 
       private:
-        scrutinytest::ostream &print_suite_start(std::string const &suitename, size_t const testcase_count);
+        scrutinytest::ostream &print_suite_start(char const *suitename, size_t const testcase_count);
 
-        scrutinytest::ostream &print_fatal(std::string const &s);
+        scrutinytest::ostream &print_fatal(char const *const s);
         scrutinytest::ostream &print_separator();
-        scrutinytest::ostream &print_run_start(std::string const &suitename, std::string const &testcase_name);
-        scrutinytest::ostream &print_run_end(std::string const &suitename, std::string const &testcase_name, unsigned long time_ms);
+        scrutinytest::ostream &print_run_start(char const *const suitename, char const *const testcase_name);
+        scrutinytest::ostream &print_run_end(char const *const suitename, char const *const testcase_name, unsigned long time_ms);
         scrutinytest::ostream &print_run_ok();
         scrutinytest::ostream &print_run_error();
         scrutinytest::ostream &print_run_fail();
 
         scrutinytest::ostream *m_ostream;
-        test_case_map_t m_test_cases;
-        std::string m_init_error_str;
+        char const *m_init_error_str;
         timestamp_ms_func_t m_timestamp_ms_func;
 
         bool m_init_error;
         bool m_success;
+
+        TestCaseLinkedList m_testcase_storage[MAX_TEST_CASES];
+        TestCaseLinkedList *m_testsuite_storage[MAX_TEST_SUITES];
+        unsigned long int m_testcase_storage_cursor;
+        unsigned long int m_testsuite_storage_cursor;
     };
 
     class MainRunner
