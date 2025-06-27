@@ -1,3 +1,11 @@
+//    config.hpp
+//        Project wide configuration, can be set by cmake
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-test-framework)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #ifndef _SCRUTINYTEST_CONFIG_H_
 #define _SCRUTINYTEST_CONFIG_H_
 

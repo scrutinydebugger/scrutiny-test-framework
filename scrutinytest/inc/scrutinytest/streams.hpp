@@ -1,3 +1,11 @@
+//    streams.hpp
+//        A layer to mock ostreams in case we build without support for c++ stdlib
+//
+//   - License : MIT - See LICENSE file.
+//   - Project : Scrutiny Debugger (github.com/scrutinydebugger/scrutiny-test-framework)
+//
+//   Copyright (c) 2025 Scrutiny Debugger
+
 #ifndef _SCRUTINYTEST_STREAMS_HPP_
 #define _SCRUTINYTEST_STREAMS_HPP_
 
