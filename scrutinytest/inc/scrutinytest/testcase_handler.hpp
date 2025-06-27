@@ -12,7 +12,6 @@
 
 #include "scrutinytest/testcase.hpp"
 #include "scrutinytest/testrunner.hpp"
-#include "scrutinytest/testsuite.hpp"
 
 namespace scrutinytest
 {
