@@ -19,7 +19,7 @@
 namespace scrutinytest
 {
 
-#if SCRUTINYTEST_HAS_STREAM
+#if !SCRUTINYTEST_NO_OUTPUT
     static scrutinytest::NullBuffer s_nullbuffer;
     static scrutinytest::ostream s_nullstream(&s_nullbuffer);
 #else
@@ -49,12 +49,12 @@ namespace scrutinytest
         m_testsuite_storage_cursor(0)
 
     {
-        for (unsigned int i = 0; i < MAX_TEST_CASES; i++)
+        for (unsigned int i = 0; i < sizeof(m_testcase_storage) / sizeof(m_testcase_storage[0]); i++)
         {
             m_testcase_storage[i].next = NULL;
             m_testcase_storage[i].testcase = NULL;
         }
-        for (unsigned int i = 0; i < MAX_TEST_SUITES; i++)
+        for (unsigned int i = 0; i < sizeof(m_testsuite_storage) / sizeof(m_testsuite_storage[0]); i++)
         {
             m_testsuite_storage[i] = NULL;
         }
@@ -285,10 +285,14 @@ namespace scrutinytest
 
     unsigned long int TestRunner::register_test_case(TestCase *const testcase)
     {
-        if (m_testcase_storage_cursor >= MAX_TEST_CASES)
+        if (m_testcase_storage_cursor >= sizeof(m_testcase_storage) / sizeof(m_testcase_storage[0]))
         {
             m_init_error = true;
             m_init_error_str = "Too much tests";
+        }
+
+        if (m_init_error)
+        {
             return 0;
         }
         unsigned long int const pos = m_testcase_storage_cursor++;
@@ -310,6 +314,13 @@ namespace scrutinytest
         }
         else
         {
+            if (m_testsuite_storage_cursor >= sizeof(m_testsuite_storage) / sizeof(m_testsuite_storage[0]))
+            {
+                m_init_error = true;
+                m_init_error_str = "Too much test suites";
+                return 0;
+            }
+
             m_testsuite_storage[m_testsuite_storage_cursor++] = &m_testcase_storage[pos];
         }
         return pos;

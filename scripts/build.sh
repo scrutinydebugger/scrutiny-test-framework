@@ -16,18 +16,27 @@ mkdir -p "$BUILD_DIR"
 
 CMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD:-98}
 CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug}
-BUILD_TESTS=${BUILD_TESTS:-OFF}
-DISABLE_EXCEPTIONS=${DISABLE_EXCEPTIONS:-OFF}
 
-cmake -GNinja \
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-        -DCMAKE_CXX_STANDARD=$CMAKE_CXX_STANDARD \
-        -DINSTALL_FOLDER=$BUILD_DIR/install \
-        -DBUILD_TESTS=$BUILD_TESTS \
-        -DDISABLE_EXCEPTIONS=$DISABLE_EXCEPTIONS \
-        ${@:1} \
-        -Wno-dev \
-        -S "$APP_ROOT" \
+SCRUTINYTEST_BUILD_TESTS=${SCRUTINYTEST_BUILD_TESTS:-OFF}
+SCRUTINYTEST_DISABLE_EXCEPTIONS=${SCRUTINYTEST_DISABLE_EXCEPTIONS:-OFF}
+SCRUTINYTEST_NO_DETAILS=${SCRUTINYTEST_NO_DETAILS:-OFF}
+SCRUTINYTEST_NO_OUTPUT=${SCRUTINYTEST_NO_OUTPUT:-OFF}
+SCRUTINYTEST_MAX_TEST_CASES=${SCRUTINYTEST_MAX_TEST_CASES:-1024}
+SCRUTINYTEST_MAX_TEST_SUITES=${SCRUTINYTEST_MAX_TEST_SUITES:-128}
+
+cmake   -GNinja                                                                 \
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}                                  \
+        -DCMAKE_CXX_STANDARD=$CMAKE_CXX_STANDARD                                \
+        -DINSTALL_FOLDER=$BUILD_DIR/install                                     \
+        -DSCRUTINYTEST_BUILD_TESTS=$SCRUTINYTEST_BUILD_TESTS                    \
+        -DSCRUTINYTEST_DISABLE_EXCEPTIONS=$SCRUTINYTEST_DISABLE_EXCEPTIONS      \
+        -DSCRUTINYTEST_NO_DETAILS=$SCRUTINYTEST_NO_DETAILS                      \
+        -DSCRUTINYTEST_NO_OUTPUT=$SCRUTINYTEST_NO_OUTPUT                        \
+        -DSCRUTINYTEST_MAX_TEST_CASES=$SCRUTINYTEST_MAX_TEST_CASES              \
+        -DSCRUTINYTEST_MAX_TEST_SUITES=$SCRUTINYTEST_MAX_TEST_SUITES            \
+        ${@:1}                                                                  \
+        -Wno-dev                                                                \
+        -S "$APP_ROOT"                                                          \
         -B "$BUILD_DIR"
 
 nice cmake --build "$BUILD_DIR" --target all

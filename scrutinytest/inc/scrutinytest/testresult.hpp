@@ -11,7 +11,7 @@
 
 #include "scrutinytest/streams.hpp"
 
-#if !SCRUTINYTEST_COMPACT
+#if !SCRUTINYTEST_NO_OUTPUT
 #include <string>
 #endif
 
@@ -25,7 +25,7 @@ namespace scrutinytest
         scrutinytest::ostream &record_success();
         inline unsigned int failure_count() const { return m_failure_count; }
         inline scrutinytest::ostream &msg_buffer() { return m_buffer_stream; }
-#if !SCRUTINYTEST_COMPACT
+#if !SCRUTINYTEST_NO_OUTPUT
         std::string msg_buffer_str();
 #endif
 

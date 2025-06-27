@@ -1,15 +1,10 @@
 #ifndef _SCRUTINYTEST_STREAMS_HPP_
 #define _SCRUTINYTEST_STREAMS_HPP_
 
+#include "scrutinytest/config.hpp"
 #include "scrutinytest/macros.hpp"
 
-#if SCRUTINYTEST_COMPACT
-#define SCRUTINYTEST_HAS_STREAM 0
-#else
-#define SCRUTINYTEST_HAS_STREAM 1
-#endif
-
-#if SCRUTINYTEST_HAS_STREAM
+#if !SCRUTINYTEST_NO_OUTPUT
 #include <ostream>
 #include <sstream>
 #define ENDL std::endl
@@ -19,7 +14,7 @@
 
 namespace scrutinytest
 {
-#if SCRUTINYTEST_HAS_STREAM
+#if !SCRUTINYTEST_NO_OUTPUT
     class NullBuffer : public std::streambuf
     {
       public:
@@ -39,7 +34,7 @@ namespace scrutinytest
         return s;
     }
 
-#if SCRUTINYTEST_COMPACT
+#if SCRUTINYTEST_NO_OUTPUT
     typedef scrutinytest::NullStream ostream;
     typedef scrutinytest::NullStream ostringstream;
 #else

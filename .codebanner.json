@@ -59,6 +59,12 @@
         },
         "tests/src/test_expect_assert_extensions.cpp": {
             "docstring": "Validate custom assetion fucntions in a test suite"
+        },
+        "scrutinytest/inc/scrutinytest/config.hpp": {
+            "docstring": "Project wide configuration, can be set by cmake"
+        },
+        "scrutinytest/inc/scrutinytest/streams.hpp": {
+            "docstring": "A layer to mock ostreams in case we build without support for c++ stdlib"
         }
     }
 }

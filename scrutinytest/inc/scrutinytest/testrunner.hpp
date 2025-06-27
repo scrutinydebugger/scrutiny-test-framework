@@ -9,13 +9,11 @@
 #ifndef _SCRUTINY_TESTRUNNER_HPP_
 #define _SCRUTINY_TESTRUNNER_HPP_
 
+#include "scrutinytest/config.hpp"
 #include "scrutinytest/streams.hpp"
 #include "scrutinytest/testcase.hpp"
 #include "scrutinytest/types.hpp"
 #include "stddef.h"
-
-#define MAX_TEST_CASES 256
-#define MAX_TEST_SUITES 64
 
 namespace scrutinytest
 {
@@ -54,8 +52,8 @@ namespace scrutinytest
         bool m_init_error;
         bool m_success;
 
-        TestCaseLinkedList m_testcase_storage[MAX_TEST_CASES];
-        TestCaseLinkedList *m_testsuite_storage[MAX_TEST_SUITES];
+        TestCaseLinkedList m_testcase_storage[SCRUTINYTEST_MAX_TEST_CASES];
+        TestCaseLinkedList *m_testsuite_storage[SCRUTINYTEST_MAX_TEST_SUITES];
         unsigned long int m_testcase_storage_cursor;
         unsigned long int m_testsuite_storage_cursor;
     };

@@ -4,8 +4,6 @@
 
 cmake_minimum_required(VERSION 3.14)
 
-option(HAVE_EXCEPTIONS "Build with exception handling" ON)
-
 project(scrutinytest)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -20,10 +18,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc/>
     $<INSTALL_INTERFACE:inc>
 )
-
-if (HAVE_EXCEPTIONS)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_EXCEPTIONS)
-endif()
 
 if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE )
