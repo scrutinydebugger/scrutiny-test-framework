@@ -29,4 +29,4 @@
 #define SCRUTINYTEST_MAX_TEST_SUITES 128
 #endif
 
-#endif
+#endif // _SCRUTINYTEST_CONFIG_H_

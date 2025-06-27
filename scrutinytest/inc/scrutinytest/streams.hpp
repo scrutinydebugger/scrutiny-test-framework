@@ -51,4 +51,4 @@ namespace scrutinytest
 #endif
 } // namespace scrutinytest
 
-#endif
+#endif // _SCRUTINYTEST_STREAMS_HPP_
