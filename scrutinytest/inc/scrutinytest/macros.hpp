@@ -20,29 +20,30 @@
 
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    SCRUTINYTEST_RESULT->record_failure() << "FAILED\n"
+    scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED"
 
 #define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED\n"
+    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED"
 
 #else
 
 #if SCRUTINYTEST_NO_DETAILS
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << '\n' << SCRUTINYTEST_RESULT->msg_buffer_str()
+    scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << SCRUTINYTEST_RESULT->msg_buffer_str()
 
 #define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << '\n' << SCRUTINYTEST_RESULT->msg_buffer_str()
+    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << SCRUTINYTEST_RESULT->msg_buffer_str()
 
 #else
 
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << DETAILS << " : " << __FILE__ << ":" << __LINE__ << '\n'                                   \
-                                          << SCRUTINYTEST_RESULT->msg_buffer_str()
+    scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure()                                                                         \
+                                       << "FAILED: " << DETAILS << " : " << __FILE__ << ":" << __LINE__ << '\n'                                      \
+                                       << SCRUTINYTEST_RESULT->msg_buffer_str()
 
 #define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \

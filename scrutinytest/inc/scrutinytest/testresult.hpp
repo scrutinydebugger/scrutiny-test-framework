@@ -25,6 +25,7 @@ namespace scrutinytest
         scrutinytest::ostream &record_success();
         inline unsigned int failure_count() const { return m_failure_count; }
         inline scrutinytest::ostream &msg_buffer() { return m_buffer_stream; }
+        inline scrutinytest::ostream &ostream() { return m_ostream; }
 #if !SCRUTINYTEST_NO_OUTPUT
         std::string msg_buffer_str();
 #endif

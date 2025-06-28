@@ -28,15 +28,18 @@ namespace scrutinytest
         // Allow to return AND log a message with an assert by taking advantage of the priority of operation
         // with oeprator= and the fact that his operator can return void.
         // Hacky stuff.
-        template <typename T> void operator=(T const &x) { static_cast<void>(x); }
+        void operator=(scrutinytest::ostream &ostream) { ostream << '\n'; }
     };
 
     class TestFailure
     {
       public:
-        template <typename T> bool operator=(T const &x)
+        // Allow to return AND log a message with an assert by taking advantage of the priority of operation
+        // with oeprator= and the fact that his operator can return void.
+        // Hacky stuff.
+        bool operator=(scrutinytest::ostream &ostream)
         {
-            static_cast<void>(x);
+            ostream << '\n';
             return false;
         }
     };
