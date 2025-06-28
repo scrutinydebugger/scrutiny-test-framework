@@ -222,9 +222,11 @@ namespace scrutinytest
 
         if (error_count > 0 || fail_count > 0)
         {
+            *m_ostream << "FAILED" << ENDL;
             return 1;
         }
 
+        *m_ostream << "SUCCESS" << ENDL;
         m_success = true;
         return 0;
     }
