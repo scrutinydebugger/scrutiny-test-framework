@@ -22,7 +22,6 @@ SCRUTINYTEST_DISABLE_EXCEPTIONS=${SCRUTINYTEST_DISABLE_EXCEPTIONS:-OFF}
 SCRUTINYTEST_NO_DETAILS=${SCRUTINYTEST_NO_DETAILS:-OFF}
 SCRUTINYTEST_NO_OUTPUT=${SCRUTINYTEST_NO_OUTPUT:-OFF}
 SCRUTINYTEST_MAX_TEST_CASES=${SCRUTINYTEST_MAX_TEST_CASES:-1024}
-SCRUTINYTEST_MAX_TEST_SUITES=${SCRUTINYTEST_MAX_TEST_SUITES:-128}
 
 cmake   -GNinja                                                                 \
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}                                  \
@@ -33,7 +32,6 @@ cmake   -GNinja                                                                 
         -DSCRUTINYTEST_NO_DETAILS=$SCRUTINYTEST_NO_DETAILS                      \
         -DSCRUTINYTEST_NO_OUTPUT=$SCRUTINYTEST_NO_OUTPUT                        \
         -DSCRUTINYTEST_MAX_TEST_CASES=$SCRUTINYTEST_MAX_TEST_CASES              \
-        -DSCRUTINYTEST_MAX_TEST_SUITES=$SCRUTINYTEST_MAX_TEST_SUITES            \
         ${@:1}                                                                  \
         -Wno-dev                                                                \
         -S "$APP_ROOT"                                                          \

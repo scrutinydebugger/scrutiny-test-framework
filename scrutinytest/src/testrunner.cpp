@@ -44,19 +44,13 @@ namespace scrutinytest
         m_init_error(false),
         m_success(false),
         m_testcase_storage(),
-        m_testsuite_storage(),
-        m_testcase_storage_cursor(0),
-        m_testsuite_storage_cursor(0)
+        m_testcase_storage_cursor(0)
 
     {
         for (unsigned int i = 0; i < sizeof(m_testcase_storage) / sizeof(m_testcase_storage[0]); i++)
         {
             m_testcase_storage[i].next = NULL;
             m_testcase_storage[i].testcase = NULL;
-        }
-        for (unsigned int i = 0; i < sizeof(m_testsuite_storage) / sizeof(m_testsuite_storage[0]); i++)
-        {
-            m_testsuite_storage[i] = NULL;
         }
     }
 
@@ -65,7 +59,7 @@ namespace scrutinytest
     int TestRunner::run()
     {
         m_success = false;
-        uint32_t run_start_timestamp_ms = m_timestamp_ms_func();
+        uint32_t const run_start_timestamp_ms = m_timestamp_ms_func();
         if (m_init_error)
         {
             print_fatal(m_init_error_str);
@@ -75,15 +69,26 @@ namespace scrutinytest
         unsigned long int error_count = 0;
         unsigned long int fail_count = 0;
         unsigned long int pass_count = 0;
-        for (unsigned long int suite_it = 0; suite_it < m_testsuite_storage_cursor; suite_it++)
+
+        // Itearte over suite
+        for (unsigned long int first_candidate_it = 0; first_candidate_it < m_testcase_storage_cursor; first_candidate_it++)
         {
-            if (m_testsuite_storage[suite_it] == NULL)
+            bool is_suite_first = true;
+            TestCaseLinkedList *node = &m_testcase_storage[first_candidate_it];
+            for (unsigned long temp = 0; temp < m_testcase_storage_cursor; temp++)
+            {
+                if (m_testcase_storage[temp].next == node)
+                {
+                    is_suite_first = false;
+                    break;
+                }
+            }
+            if (!is_suite_first)
             {
                 continue;
             }
-            TestCaseLinkedList *node = m_testsuite_storage[suite_it];
 
-            TestCase *testcase = m_testsuite_storage[suite_it]->testcase;
+            TestCase *const testcase = node->testcase;
             if (testcase == NULL)
             {
                 continue;
@@ -99,9 +104,10 @@ namespace scrutinytest
             char const *suitename = testcase->suite();
 
             *m_ostream << '\n';
-            uint32_t testsuite_start_timestamp_ms = m_timestamp_ms_func();
+            uint32_t const testsuite_start_timestamp_ms = m_timestamp_ms_func();
             print_suite_start(suitename, nb_case) << ENDL;
 
+            // Iterate over cases in suite
             do
             {
                 uint32_t testcase_start_timestamp_ms = m_timestamp_ms_func();
@@ -189,26 +195,26 @@ namespace scrutinytest
                     pass_count++;
                     print_run_ok();
                 }
-                uint32_t testcase_time_ms = m_timestamp_ms_func() - testcase_start_timestamp_ms;
+                uint32_t const testcase_time_ms = m_timestamp_ms_func() - testcase_start_timestamp_ms;
                 print_run_end(suitename, testcase->name(), testcase_time_ms) << ENDL;
             } while ((node = node->next) != NULL);
-            uint32_t testsuite_time_ms = m_timestamp_ms_func() - testsuite_start_timestamp_ms;
+            uint32_t const testsuite_time_ms = m_timestamp_ms_func() - testsuite_start_timestamp_ms;
 
             print_separator() << nb_case << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << ENDL;
         }
 
-        unsigned long int total_test = error_count + fail_count + pass_count;
+        unsigned long int const total_test = error_count + fail_count + pass_count;
         *m_ostream << "\n" << total_test << " tests executed in ";
 
-        uint32_t total_exec_time_ms = m_timestamp_ms_func() - run_start_timestamp_ms;
+        uint32_t const total_exec_time_ms = m_timestamp_ms_func() - run_start_timestamp_ms;
         if (total_exec_time_ms < 1000)
         {
             *m_ostream << total_exec_time_ms << "ms";
         }
         else
         {
-            uint32_t total_exec_time_sec = total_exec_time_ms / 1000;
-            uint32_t total_exec_time_decimal_part = (total_exec_time_ms - (total_exec_time_sec * 1000)) / 100;
+            uint32_t const total_exec_time_sec = total_exec_time_ms / 1000;
+            uint32_t const total_exec_time_decimal_part = (total_exec_time_ms - (total_exec_time_sec * 1000)) / 100;
 
             *m_ostream << total_exec_time_sec << "." << total_exec_time_decimal_part << "s";
         }
@@ -289,12 +295,9 @@ namespace scrutinytest
         {
             m_init_error = true;
             m_init_error_str = "Too much tests";
-        }
-
-        if (m_init_error)
-        {
             return 0;
         }
+
         unsigned long int const pos = m_testcase_storage_cursor++;
 
         TestCaseLinkedList *prev = NULL;
@@ -312,17 +315,7 @@ namespace scrutinytest
         {
             prev->next = &m_testcase_storage[pos];
         }
-        else
-        {
-            if (m_testsuite_storage_cursor >= sizeof(m_testsuite_storage) / sizeof(m_testsuite_storage[0]))
-            {
-                m_init_error = true;
-                m_init_error_str = "Too much test suites";
-                return 0;
-            }
 
-            m_testsuite_storage[m_testsuite_storage_cursor++] = &m_testcase_storage[pos];
-        }
         return pos;
     }
 

@@ -53,9 +53,7 @@ namespace scrutinytest
         bool m_success;
 
         TestCaseLinkedList m_testcase_storage[SCRUTINYTEST_MAX_TEST_CASES];
-        TestCaseLinkedList *m_testsuite_storage[SCRUTINYTEST_MAX_TEST_SUITES];
         unsigned long int m_testcase_storage_cursor;
-        unsigned long int m_testsuite_storage_cursor;
     };
 
     class MainRunner

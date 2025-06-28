@@ -5,14 +5,12 @@ option(SCRUTINYTEST_DISABLE_EXCEPTIONS "Forcefully disable the usage of exceptio
 option(SCRUTINYTEST_NO_DETAILS "Avoid printing debug details on a failure. Save some const emmory" OFF)
 option(SCRUTINYTEST_NO_OUTPUT "Do not print at all. For JTAG debug only" OFF)
 option(SCRUTINYTEST_MAX_TEST_CASES "Maximum number of test cases (static allocation)" 1024)
-option(SCRUTINYTEST_MAX_TEST_SUITES "Maximum number of test suite (static allocation)" 256)
 
 
 add_compile_definitions( 
     SCRUTINYTEST_NO_DETAILS=$<BOOL:${SCRUTINYTEST_NO_DETAILS}>
     SCRUTINYTEST_NO_OUTPUT=$<BOOL:${SCRUTINYTEST_NO_OUTPUT}>
     SCRUTINYTEST_MAX_TEST_CASES=${SCRUTINYTEST_MAX_TEST_CASES}
-    SCRUTINYTEST_MAX_TEST_SUITES=${SCRUTINYTEST_MAX_TEST_SUITES}
 )
 
 if (SCRUTINYTEST_DISABLE_EXCEPTIONS)
