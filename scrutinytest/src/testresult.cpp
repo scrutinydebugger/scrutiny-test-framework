@@ -40,7 +40,7 @@ namespace scrutinytest
         std::string str = m_buffer_stream.str();
         if (str.size() > 0)
         {
-            str = scrutinytest::TAB + str;
+            str = scrutinytest::TAB + str + '\n';
         }
         return str;
     }

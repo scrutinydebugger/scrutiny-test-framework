@@ -22,7 +22,7 @@ namespace scrutinytest
             if (expected[i] != candidate[i])
             {
                 SCRUTINYTEST_FAIL << "candidate[" << i << "] (" << static_cast<uint32_t>(candidate[i]) << ") != expected[" << i << "] ("
-                                  << static_cast<uint32_t>(expected[i]) << ")\n";
+                                  << static_cast<uint32_t>(expected[i]) << ")";
             }
         }
 
@@ -36,7 +36,7 @@ namespace scrutinytest
             if (buffer[i] != val)
             {
                 SCRUTINYTEST_FAIL << "buffer[" << i << "] (" << static_cast<uint32_t>(buffer[i]) << ") != expected[" << i << "] ("
-                                  << static_cast<uint32_t>(val) << ")\n";
+                                  << static_cast<uint32_t>(val) << ")";
             }
         }
         SCRUTINYTEST_PASS;
@@ -51,7 +51,7 @@ namespace scrutinytest
         }
         if (diff > abs_error)
         {
-            SCRUTINYTEST_FAIL << "Absolute error between " << a << " and " << b << " is greater than abs_error\n";
+            SCRUTINYTEST_FAIL << "Absolute error between " << a << " and " << b << " is greater than abs_error";
         }
         SCRUTINYTEST_PASS;
     }
