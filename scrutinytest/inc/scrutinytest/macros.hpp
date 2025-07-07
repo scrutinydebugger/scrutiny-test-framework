@@ -93,6 +93,7 @@
 #define EXPECT_LE(v1, v2) SCRUTINY_RELATIONAL_EXPECT_2ARGS(v1, v2, "EXPECT_LE", <=)
 #define EXPECT_GT(v1, v2) SCRUTINY_RELATIONAL_EXPECT_2ARGS(v1, v2, "EXPECT_GT", >)
 #define EXPECT_GE(v1, v2) SCRUTINY_RELATIONAL_EXPECT_2ARGS(v1, v2, "EXPECT_GE", >=)
+#define EXPECT_NULL(v1) EXPECT_EQ((void *)v1, (void *)(NULL))
 
 #define EXPECT_TRUE(v1) SCRUTINY_BOOL_EXPECT(v1, "EXPECT_TRUE", !!) // Double negation for a positive without leaving the field blank
 #define EXPECT_FALSE(v1) SCRUTINY_BOOL_EXPECT(v1, "EXPECT_FALSE", !)
