@@ -35,7 +35,7 @@ namespace scrutinytest
     }
 
 #if !SCRUTINYTEST_NO_OUTPUT
-    std::string TestResult::msg_buffer_str()
+    std::string TestResult::pop_msg_buffer_str()
     {
         std::string str = m_buffer_stream.str();
         if (str.size() > 0)
