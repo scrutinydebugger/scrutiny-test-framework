@@ -42,6 +42,7 @@ namespace scrutinytest
         {
             str = scrutinytest::TAB + str;
         }
+        m_buffer_stream.str("");
         return str;
     }
 #endif
