@@ -14,6 +14,10 @@
 #include <string>
 #endif
 
+#if SCRUTINYTEST_MODE == SCRUTINYTEST_MODE_CALLBACK
+void scrutinytest_failure_callback();
+#endif
+
 namespace scrutinytest
 {
     TestResult::TestResult(scrutinytest::ostream &stream) :
@@ -26,6 +30,9 @@ namespace scrutinytest
     scrutinytest::ostream &TestResult::record_failure()
     {
         m_failure_count++;
+        #if SCRUTINYTEST_MODE == SCRUTINYTEST_MODE_CALLBACK
+        scrutinytest_failure_callback();
+        #endif
         return m_ostream;
     }
 
