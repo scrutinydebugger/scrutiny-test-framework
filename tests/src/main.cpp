@@ -8,13 +8,11 @@
 
 #include "scrutinytest/scrutinytest.hpp"
 
-#if !SCRUTINYTEST_NO_OUTPUT
 #include <iostream>
-#endif
-
 #include <stdint.h>
 
 #if __unix__
+#include <time.h>
 #define HAS_TIMESTAMP_FUNC
 static uint32_t timestamp_ms_func()
 {
@@ -36,5 +34,13 @@ int main(int argc, char *argv[])
 #ifdef HAS_TIMESTAMP_FUNC
     scrutinytest::set_timestamp_func(timestamp_ms_func);
 #endif
-    return scrutinytest::main();
+    int main_result = scrutinytest::main();
+
+    std::cout << "\n---- Stats ----" << '\n';
+    std::cout << "Main output: " << main_result << '\n';
+    std::cout << "Pass: " << scrutinytest::pass_count() << '\n';
+    std::cout << "Failures: " << scrutinytest::failure_count() << '\n';
+    std::cout << "Error: " << scrutinytest::error_count() << '\n';
+
+    return main_result;
 }

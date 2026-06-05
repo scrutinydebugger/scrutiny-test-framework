@@ -2,14 +2,22 @@ cmake_minimum_required(VERSION 3.14)
 
 option(SCRUTINYTEST_BUILD_TESTS "Build some demo test for testing the test framework" OFF)
 option(SCRUTINYTEST_DISABLE_EXCEPTIONS "Forcefully disable the usage of exceptions" OFF)
-option(SCRUTINYTEST_NO_DETAILS "Avoid printing debug details on a failure. Save some const emmory" OFF)
-option(SCRUTINYTEST_NO_OUTPUT "Do not print at all. For JTAG debug only" OFF)
+option(SCRUTINYTEST_MODE "" "FULL")
 option(SCRUTINYTEST_MAX_TEST_CASES "Maximum number of test cases (static allocation)" 1024)
 
+if (${SCRUTINYTEST_MODE} STREQUAL "FULL")
+    add_compile_definitions( SCRUTINYTEST_MODE=SCRUTINYTEST_MODE_FULL)
+elseif(${SCRUTINYTEST_MODE} STREQUAL "NO_OUTPUT")
+    add_compile_definitions( SCRUTINYTEST_MODE=SCRUTINYTEST_MODE_NO_OUTPUT)
+elseif(${SCRUTINYTEST_MODE} STREQUAL "NO_DETAILS")
+    add_compile_definitions( SCRUTINYTEST_MODE=SCRUTINYTEST_MODE_NO_DETAILS)
+elseif(${SCRUTINYTEST_MODE} STREQUAL "CALLBACK")
+    add_compile_definitions( SCRUTINYTEST_MODE=SCRUTINYTEST_MODE_CALLBACK)
+else()
+message(SEND_ERROR "Invalid mode")
+endif()
 
 add_compile_definitions( 
-    SCRUTINYTEST_NO_DETAILS=$<BOOL:${SCRUTINYTEST_NO_DETAILS}>
-    SCRUTINYTEST_NO_OUTPUT=$<BOOL:${SCRUTINYTEST_NO_OUTPUT}>
     SCRUTINYTEST_MAX_TEST_CASES=${SCRUTINYTEST_MAX_TEST_CASES}
 )
 

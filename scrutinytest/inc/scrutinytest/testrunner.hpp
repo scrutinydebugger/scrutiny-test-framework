@@ -25,6 +25,13 @@ namespace scrutinytest
         TestCaseLinkedList *next;
     };
 
+    struct ExecStats
+    {
+        unsigned long int error_count;
+        unsigned long int fail_count;
+        unsigned long int pass_count;
+    };
+
     class TestRunner
     {
       public:
@@ -33,6 +40,10 @@ namespace scrutinytest
         void set_timestamp_func(timestamp_ms_func_t func);
         unsigned long int register_test_case(TestCase *const testcase);
         int run();
+
+        inline unsigned long int failure_count() const { return m_stats.fail_count; }
+        inline unsigned long int error_count() const { return m_stats.error_count; }
+        inline unsigned long int pass_count() const { return m_stats.pass_count; }
 
       private:
         scrutinytest::ostream &print_suite_start(char const *suitename, size_t const testcase_count);
@@ -51,6 +62,7 @@ namespace scrutinytest
 
         bool m_init_error;
         bool m_success;
+        ExecStats m_stats;
 
         TestCaseLinkedList m_testcase_storage[SCRUTINYTEST_MAX_TEST_CASES];
         unsigned long int m_testcase_storage_cursor;

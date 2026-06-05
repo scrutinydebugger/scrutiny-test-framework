@@ -19,8 +19,7 @@ CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Debug}
 
 SCRUTINYTEST_BUILD_TESTS=${SCRUTINYTEST_BUILD_TESTS:-OFF}
 SCRUTINYTEST_DISABLE_EXCEPTIONS=${SCRUTINYTEST_DISABLE_EXCEPTIONS:-OFF}
-SCRUTINYTEST_NO_DETAILS=${SCRUTINYTEST_NO_DETAILS:-OFF}
-SCRUTINYTEST_NO_OUTPUT=${SCRUTINYTEST_NO_OUTPUT:-OFF}
+SCRUTINYTEST_MODE=${SCRUTINYTEST_MODE:-FULL}
 SCRUTINYTEST_MAX_TEST_CASES=${SCRUTINYTEST_MAX_TEST_CASES:-1024}
 
 cmake   -GNinja                                                                 \
@@ -29,8 +28,7 @@ cmake   -GNinja                                                                 
         -DINSTALL_FOLDER=$BUILD_DIR/install                                     \
         -DSCRUTINYTEST_BUILD_TESTS=$SCRUTINYTEST_BUILD_TESTS                    \
         -DSCRUTINYTEST_DISABLE_EXCEPTIONS=$SCRUTINYTEST_DISABLE_EXCEPTIONS      \
-        -DSCRUTINYTEST_NO_DETAILS=$SCRUTINYTEST_NO_DETAILS                      \
-        -DSCRUTINYTEST_NO_OUTPUT=$SCRUTINYTEST_NO_OUTPUT                        \
+        -DSCRUTINYTEST_MODE=$SCRUTINYTEST_MODE                      \
         -DSCRUTINYTEST_MAX_TEST_CASES=$SCRUTINYTEST_MAX_TEST_CASES              \
         ${@:1}                                                                  \
         -Wno-dev                                                                \

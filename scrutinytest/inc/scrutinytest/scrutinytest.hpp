@@ -37,6 +37,14 @@ namespace scrutinytest
         // Allow to return AND log a message with an assert by taking advantage of the priority of operation
         // with oeprator= and the fact that his operator can return void.
         // Hacky stuff.
+
+        TestFailure()
+        {
+#if SCRUTINYTEST_MODE == SCRUTINYTEST_MODE_CALLBACK
+            scrutinytest_failure_callback();
+#endif
+        }
+
         bool operator=(scrutinytest::ostream &ostream)
         {
             ostream << '\n';
@@ -47,6 +55,9 @@ namespace scrutinytest
     int main();
     void set_ostream(scrutinytest::ostream *ostream);
     void set_timestamp_func(timestamp_ms_func_t func);
+    unsigned long int pass_count();
+    unsigned long int error_count();
+    unsigned long int failure_count();
 
 } // namespace scrutinytest
 

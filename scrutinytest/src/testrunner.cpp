@@ -42,6 +42,7 @@ namespace scrutinytest
         m_init_error_str(NULL),
         m_timestamp_ms_func(default_timestamp_ms_func),
         m_init_error(false),
+        m_stats(),
         m_success(false),
         m_testcase_storage(),
         m_testcase_storage_cursor(0)
@@ -66,9 +67,9 @@ namespace scrutinytest
             return 2;
         }
 
-        unsigned long int error_count = 0;
-        unsigned long int fail_count = 0;
-        unsigned long int pass_count = 0;
+        m_stats.error_count = 0;
+        m_stats.fail_count = 0;
+        m_stats.pass_count = 0;
 
         // Itearte over suite
         for (unsigned long int first_candidate_it = 0; first_candidate_it < m_testcase_storage_cursor; first_candidate_it++)
@@ -181,18 +182,18 @@ namespace scrutinytest
 #endif
                 if (error)
                 {
-                    error_count++;
+                    m_stats.error_count++;
                     *m_ostream << error_str << ENDL;
                     print_run_error();
                 }
                 else if (!pass)
                 {
-                    fail_count++;
+                    m_stats.fail_count++;
                     print_run_fail();
                 }
                 else
                 {
-                    pass_count++;
+                    m_stats.pass_count++;
                     print_run_ok();
                 }
                 uint32_t const testcase_time_ms = m_timestamp_ms_func() - testcase_start_timestamp_ms;
@@ -203,7 +204,7 @@ namespace scrutinytest
             print_separator() << nb_case << " tests from " << suitename << " (" << testsuite_time_ms << " ms)" << ENDL;
         }
 
-        unsigned long int const total_test = error_count + fail_count + pass_count;
+        unsigned long int const total_test = m_stats.error_count + m_stats.fail_count + m_stats.pass_count;
         *m_ostream << "\n" << total_test << " tests executed in ";
 
         uint32_t const total_exec_time_ms = m_timestamp_ms_func() - run_start_timestamp_ms;
@@ -218,9 +219,10 @@ namespace scrutinytest
 
             *m_ostream << total_exec_time_sec << "." << total_exec_time_decimal_part << "s";
         }
-        *m_ostream << ". (" << error_count << " errors, " << fail_count << " failures, " << pass_count << " successes)" << ENDL;
+        *m_ostream << ". (" << m_stats.error_count << " errors, " << m_stats.fail_count << " failures, " << m_stats.pass_count << " successes)"
+                   << ENDL;
 
-        if (error_count > 0 || fail_count > 0)
+        if (m_stats.error_count > 0 || m_stats.fail_count > 0)
         {
             *m_ostream << "FAILED" << ENDL;
             return 1;
