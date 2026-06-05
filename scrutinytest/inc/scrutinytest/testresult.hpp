@@ -28,6 +28,7 @@ namespace scrutinytest
         inline scrutinytest::ostream &ostream() { return m_ostream; }
 #if !SCRUTINYTEST_NO_OUTPUT
         std::string pop_msg_buffer_str();
+        std::string clear_msg_buffer_str();
 #endif
 
         scrutinytest::ostream &m_ostream;

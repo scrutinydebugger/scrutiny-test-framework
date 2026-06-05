@@ -51,7 +51,7 @@ namespace scrutinytest
         }
         if (diff > abs_error)
         {
-            SCRUTINYTEST_FAIL << "Absolute error between " << a << " and " << b << " is greater than " << abs_error ;
+            SCRUTINYTEST_FAIL << "Absolute error between " << a << " and " << b << " is greater than " << abs_error;
         }
         SCRUTINYTEST_PASS;
     }

@@ -18,6 +18,9 @@
 
 #if SCRUTINYTEST_NO_OUTPUT
 
+#define SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2) "\n"
+#define SCRUTINY_BOOL_FAILURE_MSG(v) "\n"
+
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
     scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED"
@@ -29,15 +32,22 @@
 #else
 
 #if SCRUTINYTEST_NO_DETAILS
+
+#define SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2) "\n"
+#define SCRUTINY_BOOL_FAILURE_MSG(v) "\n"
+
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << SCRUTINYTEST_RESULT->pop_msg_buffer_str()
+    scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED" << SCRUTINYTEST_RESULT->clear_msg_buffer_str()
 
 #define SCRUTINYTEST_ASSERT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
-    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED: " << SCRUTINYTEST_RESULT->pop_msg_buffer_str()
+    return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure() << "FAILED" << SCRUTINYTEST_RESULT->clear_msg_buffer_str()
 
 #else
+
+#define SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2) scrutinytest::TAB << #v1 ": " << (v1) << "\n" << scrutinytest::TAB << #v2 ": " << (v2) << '\n'
+#define SCRUTINY_BOOL_FAILURE_MSG(v) scrutinytest::TAB << #v ": " << (v) << "\n"
 
 #define SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, DETAILS)                                                                                    \
     if (!(BOOL_PREDICATE))                                                                                                                           \
@@ -73,10 +83,6 @@
     };                                                                                                                                               \
     scrutinytest::TestCaseHandler<ClassScrutinyTest_##caseclass##casename> g_scrutinytest_##caseclass##_##casename(#caseclass, #casename);           \
     void ClassScrutinyTest_##caseclass##casename::body()
-
-#define SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2) scrutinytest::TAB << #v1 ": " << (v1) << "\n" << scrutinytest::TAB << #v2 ": " << (v2) << '\n'
-
-#define SCRUTINY_BOOL_FAILURE_MSG(v) scrutinytest::TAB << #v ": " << (v) << "\n"
 
 #define SCRUTINY_RELATIONAL_EXPECT_2ARGS(v1, v2, macro_name, op)                                                                                     \
     SCRUTINYTEST_EXPECT_WITH_DETAILS((v1)op(v2), macro_name "(" #v1 "," #v2 ")") << SCRUTINY_RELATIONAL_2ARGS_FAILURE_MSG(v1, v2)

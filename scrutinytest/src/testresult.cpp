@@ -45,5 +45,11 @@ namespace scrutinytest
         m_buffer_stream.str("");
         return str;
     }
+
+    std::string TestResult::clear_msg_buffer_str()
+    {
+        m_buffer_stream.str("");
+        return "";
+    }
 #endif
 } // namespace scrutinytest
