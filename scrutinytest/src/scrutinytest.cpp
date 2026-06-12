@@ -10,19 +10,10 @@
 #include "scrutinytest/streams.hpp"
 #include "scrutinytest/testcase_handler.hpp"
 
-#include <iostream>
-
 #if SCRUTINYTEST_MODE == SCRUTINYTEST_MODE_CALLBACK
-
-#if defined(__TI_COMPILER_VERSION__) && defined(__TMS320C2000__)
-#pragma WEAK(scrutinytest_failure_callback)
-void scrutinytest_failure_callback() {}
-#else
 void __attribute__((weak)) scrutinytest_failure_callback()
 {
-    std::cout << "callback" << std::endl;
 }
-#endif
 #endif
 
 namespace scrutinytest

@@ -74,7 +74,8 @@ void scrutinytest_failure_callback();
     return scrutinytest::AssertShenanigan() = SCRUTINYTEST_RESULT->record_failure()                                                                  \
                                               << "FAILED: " << DETAILS << " : " << __FILE__ << ":" << __LINE__ << '\n'                               \
                                               << SCRUTINYTEST_RESULT->pop_msg_buffer_str()
-
+#else
+#error
 #endif
 
 #define SCRUTINYTEST_EXPECT(BOOL_PREDICATE) SCRUTINYTEST_EXPECT_WITH_DETAILS(BOOL_PREDICATE, "")
